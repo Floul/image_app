@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_app/imageComparator.dart';
+import 'package:image_app/image_comparator.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,32 +36,40 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text("Image A"),
-                    Image.asset("assets/images/original_image.png"),
-                  ],
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Text("Image A"),
+                      Image.asset("assets/images/original_image.png"),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: <Widget>[
-                    Text("Image B"),
-                    Image.asset("assets/images/modified_image.png"),
-                  ],
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Text("Image B"),
+                      Image.asset("assets/images/modified_image.png"),
+                    ],
+                  ),
                 ),
               ],
             ),
             Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text("Difference"),
                 FutureBuilder<Image>(
                   future: ImageComparator.compareImages(
                       "assets/images/original_image.png",
                       "assets/images/modified_image.png"),
-                  builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Image> snapshot) {
                     if (snapshot.hasData) {
                       return snapshot.data;
                     } else
-                      return CircularProgressIndicator(backgroundColor: Colors.cyanAccent,);
+                      return CircularProgressIndicator(
+                        backgroundColor: Colors.cyanAccent,
+                      );
                   },
                 ),
               ],
