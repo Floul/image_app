@@ -30,53 +30,61 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Text("Image A"),
-                      Image.asset("assets/images/original_image.png"),
-                    ],
-                  ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                  child: imageWithTitle(
+                "Image A",
+                Image.asset("assets/images/original_image.png"),
+              )),
+              Expanded(
+                child: imageWithTitle(
+                  "Image B",
+                  Image.asset("assets/images/modified_image.png"),
                 ),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Text("Image B"),
-                      Image.asset("assets/images/modified_image.png"),
-                    ],
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          imageWithTitle(
+            "Difference",
+            FutureBuilder<Image>(
+              future: ImageComparator.compareImages(
+                  "assets/images/original_image.png",
+                  "assets/images/modified_image.png"),
+              builder: (BuildContext context, AsyncSnapshot<Image> snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data;
+                } else
+                  return CircularProgressIndicator(
+                    backgroundColor: Colors.cyanAccent,
+                    strokeWidth: 5,
+                  );
+              },
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text("Difference"),
-                FutureBuilder<Image>(
-                  future: ImageComparator.compareImages(
-                      "assets/images/original_image.png",
-                      "assets/images/modified_image.png"),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Image> snapshot) {
-                    if (snapshot.hasData) {
-                      return snapshot.data;
-                    } else
-                      return CircularProgressIndicator(
-                        backgroundColor: Colors.cyanAccent,
-                      );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
+          )
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget imageWithTitle(String title, Widget child) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          child,
+        ],
+      ),
     );
   }
 }

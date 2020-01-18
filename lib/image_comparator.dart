@@ -6,21 +6,21 @@ import 'package:image/image.dart' as img;
 class ImageComparator {
   static Future<Image> compareImages(
       String firstImagePath, String secondImagePath) async {
-    img.Image _firstImage = await getBitmap(firstImagePath);
-    img.Image _secondImage = await getBitmap(secondImagePath);
-    img.Image _differenceImage = img.Image.from(_secondImage);
-    if (_firstImage.width != _secondImage.width ||
-        _firstImage.height != _secondImage.height) {
+    img.Image firstImage = await getBitmap(firstImagePath);
+    img.Image secondImage = await getBitmap(secondImagePath);
+    img.Image differenceImage = img.Image.from(secondImage);
+    if (firstImage.width != secondImage.width ||
+        firstImage.height != secondImage.height) {
       throw Exception("Images must have the same dimensions!");
     }
-    for (int x = 0; x < _firstImage.width; x++) {
-      for (int y = 0; y < _firstImage.height; y++) {
-        if (_firstImage.getPixelSafe(x, y) != _secondImage.getPixelSafe(x, y)) {
-          _differenceImage.setPixel(x, y, 0xFFFFA500);
+    for (int x = 0; x < firstImage.width; x++) {
+      for (int y = 0; y < firstImage.height; y++) {
+        if (firstImage.getPixelSafe(x, y) != secondImage.getPixelSafe(x, y)) {
+          differenceImage.setPixel(x, y, 0xFFFFA500);
         }
       }
     }
-    return Image.memory(img.encodePng(_differenceImage));
+    return Image.memory(img.encodePng(differenceImage));
   }
 
   static Future<img.Image> getBitmap(String assetPath) async {
