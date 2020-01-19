@@ -74,7 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
 class ImageWithTitle extends StatelessWidget {
   final String title;
   final Widget child;
+
   ImageWithTitle(this.title, this.child);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
